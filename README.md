@@ -3,7 +3,7 @@
 # Livermore-analyze
 ##### Analyze the stonks
 
-[![Tinygrad](https://img.shields.io/badge/Tinygrad-FFFFFF.svg?style=for-the-badge&logo=tinygrad)](https://github.com/geohot/tinygrad)
+[![Tinygrad](https://img.shields.io/badge/Tinygrad-FFFFFF.svg?style=for-the-badge&logoColor=000000&logo=tinygrad)](https://github.com/geohot/tinygrad)
 </div>
 
 ## ⇁  Introduction
