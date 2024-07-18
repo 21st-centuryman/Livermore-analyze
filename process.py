@@ -33,8 +33,8 @@ def main(path, seq_length):
 
 
 if __name__ == "__main__":
-    path = "../data"
-    seq_length = 30
+    path = "YOUR PATH"
+    seq_length = # ADD AN INT
     os.makedirs("process_data", exist_ok=True)
     os.makedirs(f"process_data/{seq_length}", exist_ok=True)
     main(path, seq_length)
