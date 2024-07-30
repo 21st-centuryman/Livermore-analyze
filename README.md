@@ -1,14 +1,60 @@
 <div align="center">
 
 # Livermore-analyze
-##### Analyze the stonks
-
-[![Tinygrad](https://img.shields.io/badge/Tinygrad-FFFFFF.svg?style=for-the-badge&logoColor=000000&logo=tinygrad)](https://github.com/geohot/tinygrad)
+##### Trade stocks
+[![Python](https://img.shields.io/badge/python-3776AB.svg?style=for-the-badge&logo=python&logoColor=white)]()
+[![Pytorch](https://img.shields.io/badge/stable_baselines3-EE4C2C.svg?style=for-the-badge&logo=pytorch&logoColor=white)]()
+[![openai](https://img.shields.io/badge/OpenAI_gymnasium-412991.svg?style=for-the-badge&logo=openai&logoColor=white)]()
+<p align="center">
+  <img width="533" height="300" src="./assets/animation.gif">
+  <br/>
+  <i>Agent is randomly buying and selling NVDA, there is no intelligence here</i>
+</p>
 </div>
 
 ## ⇁  Introduction
-Welcome to Livermore analyze. 
 
-Until I finish Livermore-fetch this repo will not be planned and worked on. 
+***WIP this still needs work. I have to adjust the reward and observations until I see meaningful results.***
 
-update: just finished it. stay tunned for updates!
+Welcome to Livermore analyze. This is a gymnasium environment for trading and selling stocks.
+
+The agent will have to perform an action for each data point. The possible actions are:
+
+0: action; 0 Hold, 1 Sell, 2 Buy
+
+The agent gets the following observations: 
+1. Data points up to the current number
+2. A list of purchases; a 2d list including the purchase price and the amount
+
+The input data needed for this environment can be collected using [Livermore-fetch](https://github.com/21st-centuryman/Livermore-fetch) a program that both collects and process the data for this environment. Your data needs to be one-dimensional and a list of numbers, shown below:
+
+```console
+$ head -5 data/processed/NVDA.csv
+TAPE
+0.454
+0.454
+0.451
+0.451
+```
+
+## ⇁  Instalation
+```console
+git clone https://github.com/21st-centuryman/Livermore-analyze
+```
+
+## ⇁  Usage
+```python
+import gymnasium as gym
+from livermore_gym.envs import LivermoreEnv
+
+fetch_file = /path/to/stock/data.csv
+env = livermoreenv(fetch_file)
+
+vec_env = model.get_env()
+obs = vec_env.reset()
+done = False
+while not done:
+    action = ... # Your agent code here
+    obs, reward, done, info = vec_env.step(action)
+    vec_env.render()
+```
