@@ -4,7 +4,7 @@
 ##### Trade stocks
 [![Python](https://img.shields.io/badge/python-3776AB.svg?style=for-the-badge&logo=python&logoColor=white)]()
 [![Pytorch](https://img.shields.io/badge/stable_baselines3-EE4C2C.svg?style=for-the-badge&logo=pytorch&logoColor=white)]()
-[![openai](https://img.shields.io/badge/OpenAI_gymnasium-412991.svg?style=for-the-badge&logo=openai&logoColor=white)]()
+[![openai](https://img.shields.io/badge/gymnasium-412991.svg?style=for-the-badge&logo=openai&logoColor=white)]()
 <p align="center">
   <img width="533" height="300" src="./assets/animation.gif">
   <br/>
