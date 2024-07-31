@@ -37,7 +37,7 @@ TAPE
 0.451
 ```
 
-## ⇁  Instalation
+## ⇁  Installation
 ```console
 git clone https://github.com/21st-centuryman/Livermore-analyze
 ```
