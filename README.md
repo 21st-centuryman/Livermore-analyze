@@ -8,9 +8,7 @@
 <p align="center">
   <img width="533" height="300" src="./assets/animation.gif">
   <br/>
-  <i>A trained agent not going bankrupt due to inflation.</i>
-    <br\>
-  <i>In order to profit I would need to train it longer</i>
+  <i>A trained agent not going bankrupt due to inflation. In order to profit I would need to train it longer</i>
 </p>
 </div>
 
