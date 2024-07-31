@@ -1,0 +1,5 @@
+pygame
+polars
+gymnasium
+numpy
+stable_baselines3

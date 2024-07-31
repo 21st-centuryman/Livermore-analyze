@@ -13,10 +13,9 @@ class LivermoreEnv(gym.Env):
   0: actions 0 Hold, 1 Sell, 2 Buy
   """
 
-  def __init__(self, stock):
+  def __init__(self, stock, size):
     super(LivermoreEnv, self).__init__()
-    self.size = 30
-    self.target = 10000
+    self.size = size
     self.data = (
       pl.read_csv(f"{stock}")["TAPE"].cast(pl.Float32).to_numpy().flatten().tolist()
     )  # make it a variable we call
@@ -24,21 +23,20 @@ class LivermoreEnv(gym.Env):
     self.action_space = spaces.Discrete(n=3)
 
   def step(self, action):
-    # update values
     prev_bank = self.bank
     amount, transaction = self.do_action(self.length, self.data, action, self.purchases, self.bank)
     self.bank += amount
     self.bank -= self.bank * self.inflation  # inflation removes value not increase it.
     self.purchases = transaction
-    self.reward = prev_bank - self.bank - self.target  # We need to work on this reward function
-
-    # TapeRender(self.data, self.bank, self.purchases, action, self.length)
-
-    # get ready for next step
+    self.reward = prev_bank - self.bank  # We need to work on this reward function
+    # TapeRender(self.data, self.bank, self.purchases, action, self.length)  # Needs to be added in the render function
     self.length += 1
     info = {}
-    if self.length == len(self.data) or self.bank < 0:
+    if self.length == len(self.data):
       self.terminated = True
+    if self.bank < 0:
+      self.bank = 0
+      self.reward -= 5000  # Don't spend all your money at once
     observation = np.append(np.array(self.data[self.length - self.size : self.length + 1]), self.purchases).astype(
       np.float32
     )
@@ -48,7 +46,7 @@ class LivermoreEnv(gym.Env):
     if seed is not None:
       np.random.seed(seed)
     self.purchases = np.zeros(len(self.data) - self.size)
-    self.length = self.size  # make it a variable we call
+    self.length = self.size
     self.terminated = False
     self.bank = 5000  # make it a variable we call
     self.inflation = 0.1 / 365  # inflation is static and high
@@ -58,10 +56,9 @@ class LivermoreEnv(gym.Env):
 
   def do_action(self, frame, data, act, purchases, bank):
     if act == 1:
-      amount = data[frame] - purchases[-1]
-      return amount, np.insert(purchases[:-1], 0, 0)
+      return (data[frame] - purchases[0]), np.insert(purchases[1:], len(purchases) - 1, 0)
     elif act == 2 and bank > data[frame]:
-      return -data[frame], np.append(np.delete(purchases, 0), data[frame])
+      return -data[frame], np.insert(purchases[:-1], 0, data[frame])
     else:
       return 0, purchases
 
@@ -91,7 +88,7 @@ class TapeRender:
     screen.blit(font.render(f"Action: {action}", True, WHITE), (10, 58))
     screen.blit(
       font.render(
-        f"6 Owned_stocks: {purchases[-6:-1]} ",
+        f"Owned_stocks: {purchases[0:6]} ...",
         True,
         WHITE,
       ),
@@ -129,7 +126,6 @@ class TapeRender:
 
     # For gif creation, will be removed
     # if frame % 20 == 0:
-    #    pygame.image.save(screen, f"frames/frame_{frame:04d}.png")
-    #    png +=1
+    #  pygame.image.save(screen, f"frames/frame_{frame:04d}.png")
 
     pygame.display.flip()
