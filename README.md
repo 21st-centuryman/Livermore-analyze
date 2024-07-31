@@ -8,7 +8,8 @@
 <p align="center">
   <img width="533" height="300" src="./assets/animation.gif">
   <br/>
-  <i>Agent is randomly buying and selling NVDA, there is no intelligence here</i>
+  <i>A trained agent not going bankrupt due to inflation</i>
+  <i>In order to profit I would need to train it longer</i>
 </p>
 </div>
 
