@@ -8,11 +8,11 @@ os.makedirs("models/PPO", exist_ok=True)
 os.makedirs(logdir, exist_ok=True)
 
 TIMESTEPS = 1000000
+directory = "/path/to/dir"
 
 
 def learn(model):
   for i in range(1, 10):
-    print(i)
     model.learn(
       total_timesteps=TIMESTEPS,
       reset_num_timesteps=False,
@@ -37,10 +37,9 @@ def load(model):
 #   This is needed for the loop or if you want to run one stock value
 # ---------------------------------------------------------
 
-print("Initial training")
-directory = "../data/processed/"
-initial_env = LivermoreEnv(f"{directory}/NVDA.csv", 30)
-learn(PPO("MlpPolicy", initial_env, tensorboard_log=logdir))
+# print("Initial training")
+# initial_env = LivermoreEnv(f"{directory}/NVDA.csv", 30)
+# learn(PPO("MlpPolicy", initial_env, tensorboard_log=logdir))
 
 
 # ---------------------------------------------------------

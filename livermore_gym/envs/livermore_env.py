@@ -3,6 +3,7 @@ from gymnasium import spaces
 import numpy as np
 import polars as pl
 import pygame
+import time
 
 
 class LivermoreEnv(gym.Env):
@@ -29,7 +30,7 @@ class LivermoreEnv(gym.Env):
     self.bank -= self.bank * self.inflation  # inflation removes value not increase it.
     self.purchases = transaction
     self.reward = prev_bank - self.bank  # We need to work on this reward function
-    # TapeRender(self.data, self.bank, self.purchases, action, self.length)  # Needs to be added in the render function
+    TapeRender(self.data, self.bank, self.purchases, action, self.length)  # Needs to be added in the render function
     self.length += 1
     info = {}
     if self.length == len(self.data):
@@ -49,7 +50,9 @@ class LivermoreEnv(gym.Env):
     self.length = self.size
     self.terminated = False
     self.bank = 5000  # make it a variable we call
-    self.inflation = 0.1 / 365  # inflation is static and high
+    self.inflation = (0.008 + 0.001 + 0.013 + 0.021 + 0.024 + 0.023 + 0.012 + 0.047 + 0.08 + 0.047) / (
+      365 * 10
+    )  # inflation is static average over 10 years
     observation = np.append(np.array(self.data[0 : self.length + 1]), self.purchases).astype(np.float32)
     self.reward = 0
     return observation, {}
@@ -118,14 +121,9 @@ class TapeRender:
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-    # png = 0  # for creating the pngs
     screen.fill(BLACK)
     self.draw_line_graph(heights, widths, frame, data, screen)
     self.draw_frame_number(bank, frame, act, purchases, data, screen)
     pygame.display.flip()
-
-    # For gif creation, will be removed
-    # if frame % 20 == 0:
-    #  pygame.image.save(screen, f"frames/frame_{frame:04d}.png")
 
     pygame.display.flip()
