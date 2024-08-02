@@ -3,23 +3,24 @@ from stable_baselines3 import PPO
 import os
 
 logdir = "logs"
+modeldir = "models/PPO"
 
-os.makedirs("models/PPO", exist_ok=True)
+os.makedirs(modeldir, exist_ok=True)
 os.makedirs(logdir, exist_ok=True)
 
 TIMESTEPS = 1000000
 directory = "/path/to/dir"
 
 
-def learn(model):
+def learn(model, name):
   for i in range(1, 10):
     model.learn(
       total_timesteps=TIMESTEPS,
       reset_num_timesteps=False,
-      tb_log_name="PPO",
+      tb_log_name=name,
       progress_bar=True,
     )
-    model.save("models/PPO")
+    model.save(f"models/{name}")
 
 
 def load(model):
@@ -34,13 +35,21 @@ def load(model):
 
 
 # ---------------------------------------------------------
-#   This is needed for the loop or if you want to run one stock value
+#   This is needed for the loop
+#   or if you want to run one stock value
 # ---------------------------------------------------------
 
 # print("Initial training")
 # initial_env = LivermoreEnv(f"{directory}/NVDA.csv", 30)
-# learn(PPO("MlpPolicy", initial_env, tensorboard_log=logdir))
+# learn(PPO("MlpPolicy", initial_env, tensorboard_log=logdir), "30")
 
+# ---------------------------------------------------------
+#   if you want to load a model and run it
+# ---------------------------------------------------------
+
+# print("Loaded training")
+# env = LivermoreEnv(f"{directory}/NVDA.csv", 30)
+# learn(PPO.load(f"{modeldir}.zip", env, tensorboard_log=logdir))
 
 # ---------------------------------------------------------
 #   If you want to run the model for each file in a dir
@@ -52,13 +61,12 @@ def load(model):
 #    print(f"{index}/{len(os.listdir(directory))}: {filename}")
 #    env = LivermoreEnv(f"{directory}/{filename}", 30)
 #
-#    learn(PPO.load("models/PPO/livermore", env, tensorboard_log=logdir))
+#    learn(ppo.load(f"{modeldir}.zip", env, tensorboard_log=logdir))
 #    index += 1
 
 
 # ---------------------------------------------------------
 #   If you want to run a loaded value
 # ---------------------------------------------------------
-# load_path = "./models/PPO/"
 # load_env = LivermoreEnv(f"{directory}/NVDA.csv", 30)
-# load(PPO.load(load_path, load_env))
+# load(PPO.load(f"{modeldir}.zip", load_env))

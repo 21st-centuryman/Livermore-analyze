@@ -3,7 +3,6 @@ from gymnasium import spaces
 import numpy as np
 import polars as pl
 import pygame
-import time
 
 
 class LivermoreEnv(gym.Env):
@@ -30,12 +29,12 @@ class LivermoreEnv(gym.Env):
     self.bank -= self.bank * self.inflation  # inflation removes value not increase it.
     self.purchases = transaction
     self.reward = prev_bank - self.bank  # We need to work on this reward function
-    TapeRender(self.data, self.bank, self.purchases, action, self.length)  # Needs to be added in the render function
+    # TapeRender(self.data, self.bank, self.purchases, action, self.length)  # Needs to be added in the render function
     self.length += 1
     info = {}
     if self.length == len(self.data):
       self.terminated = True
-    if self.bank < 0:
+    if self.bank <= 0:
       self.bank = 0
       self.reward -= 5000  # Don't spend all your money at once
     observation = np.append(np.array(self.data[self.length - self.size : self.length + 1]), self.purchases).astype(
@@ -124,6 +123,4 @@ class TapeRender:
     screen.fill(BLACK)
     self.draw_line_graph(heights, widths, frame, data, screen)
     self.draw_frame_number(bank, frame, act, purchases, data, screen)
-    pygame.display.flip()
-
     pygame.display.flip()
